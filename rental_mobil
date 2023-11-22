@@ -1,0 +1,174 @@
+# Program rental mobil sederhana dengan fitur CRUD dan interaksi pengguna
+# Membuat kelas Mobil yang merepresentasikan objek mobil
+class Mobil:
+    # Konstruktor kelas Mobil
+    def __init__(self, plat, merk, warna, harga):
+        self.plat = plat # Nomor plat mobil
+        self.merk = merk # Merk mobil
+        self.warna = warna # Warna mobil
+        self.harga = harga # Harga sewa per hari
+
+    # Metode untuk menampilkan informasi mobil
+    def info(self):
+        print(f"|{self.plat}\t\t|{self.merk}\t\t|{self.warna}\t\t|Rp{self.harga}\t\t|")
+        # print(f"Plat: {self.plat}")
+        # print(f"Merk: {self.merk}")
+        # print(f"Warna: {self.warna}")
+        # print(f"Harga: Rp{self.harga}")
+
+# Membuat kelas Rental yang merepresentasikan sistem rental mobil
+class Rental:
+    # Konstruktor kelas Rental
+    def __init__(self):
+        self.mobil = [] # Daftar mobil yang tersedia
+
+    # Metode untuk menambahkan mobil baru ke sistem
+    def create(self, plat, merk, warna, harga):
+        # Membuat objek mobil baru
+        mobil_baru = Mobil(plat, merk, warna, harga)
+        # Menambahkan mobil baru ke daftar mobil
+        self.mobil.append(mobil_baru)
+        # Menampilkan pesan konfirmasi
+        print(f"Mobil dengan plat {plat} berhasil ditambahkan.")
+
+    # Metode untuk mengubah informasi mobil yang ada di sistem
+    def update(self, plat, merk, warna, harga):
+        # Mencari mobil yang sesuai dengan plat yang diberikan
+        for mobil in self.mobil:
+            if mobil.plat == plat:
+                # Mengubah informasi mobil sesuai dengan parameter
+                mobil.merk = merk
+                mobil.warna = warna
+                mobil.harga = harga
+                # Menampilkan pesan konfirmasi
+                print(f"Mobil dengan plat {plat} berhasil diubah.")
+                return # Keluar dari metode
+        # Jika tidak ada mobil yang sesuai, menampilkan pesan error
+        print(f"Tidak ada mobil dengan plat {plat}.")
+
+    # Metode untuk menampilkan informasi semua mobil yang ada di sistem
+    def read(self):
+        # Jika daftar mobil tidak kosong, menampilkan informasi setiap mobil
+        if self.mobil:
+            print("Daftar mobil yang tersedia:")
+            print("+-----------------------------------------------------------------------+.")
+            print("|\tPlat\t|\tMerk\t|\tWarna\t|\tHarga sewa\t|")
+            print("+-----------------------------------------------------------------------+.")
+            for mobil in self.mobil:
+                mobil.info()
+                print()
+        # Jika daftar mobil kosong, menampilkan pesan bahwa tidak ada mobil
+        else:
+            print("Tidak ada mobil yang tersedia.")
+
+    # Metode untuk menghapus mobil yang ada di sistem
+    def delete(self, plat):
+        # Mencari mobil yang sesuai dengan plat yang diberikan
+        for i in range(len(self.mobil)):
+            if self.mobil[i].plat == plat:
+                # Menghapus mobil dari daftar mobil
+                self.mobil.pop(i)
+                # Menampilkan pesan konfirmasi
+                print(f"Mobil dengan plat {plat} berhasil dihapus.")
+                return # Keluar dari metode
+        # Jika tidak ada mobil yang sesuai, menampilkan pesan error
+        print(f"Tidak ada mobil dengan plat {plat}.")
+
+    # Metode untuk menampilkan menu pilihan
+    def menu(self):
+        print("+---------------------------------------+.")
+        print("|  Selamat Datang di Menu Rental Mobil  |")
+        print("+---------------------------------------+.")
+        print("| 1. Tambahkan mobil baru               |")
+        print("| 2. Ubah informasi mobil               |")
+        print("| 3. Tampilkan informasi semua mobil    |")
+        print("| 4. Hapus mobil                        |")
+        print("| 5. Keluar dari program                |")
+        print("+---------------------------------------+.")
+        print("  Masukkan Pilihan Anda: ")
+
+    # Metode untuk menerima input pengguna dan memvalidasi data
+    def input_data(self, pilihan):
+        # Jika pilihan adalah 1, meminta input plat, merk, warna, dan harga mobil baru
+        if pilihan == 1:
+            plat = input("Masukkan nomor plat mobil: ")
+            merk = input("Masukkan merk mobil: ")
+            warna = input("Masukkan warna mobil: ")
+            harga = input("Masukkan harga sewa per hari: ")
+            # Memvalidasi input harga, harus berupa angka positif
+            try:
+                harga = int(harga)
+                if harga <= 0:
+                    raise ValueError
+            except ValueError:
+                print("Harga harus berupa angka positif.")
+                return None # Keluar dari metode
+            # Mengembalikan data input sebagai tuple
+            return (plat, merk, warna, harga)
+        # Jika pilihan adalah 2, meminta input plat mobil yang ingin diubah dan data baru
+        elif pilihan == 2:
+            plat = input("Masukkan nomor plat mobil yang ingin diubah: ")
+            merk = input("Masukkan merk mobil baru: ")
+            warna = input("Masukkan warna mobil baru: ")
+            harga = input("Masukkan harga sewa per hari baru: ")
+            # Memvalidasi input harga, harus berupa angka positif
+            try:
+                harga = int(harga)
+                if harga <= 0:
+                    raise ValueError
+            except ValueError:
+                print("Harga harus berupa angka positif.")
+                return None # Keluar dari metode
+            # Mengembalikan data input sebagai tuple
+            return (plat, merk, warna, harga)
+        # Jika pilihan adalah 3, tidak meminta input apapun
+        elif pilihan == 3:
+             return ()
+        # Jika pilihan adalah 4, meminta input plat mobil yang ingin dihapus
+        elif pilihan == 4:
+            plat = input("Masukkan nomor plat mobil yang ingin dihapus: ")
+            # Mengembalikan data input sebagai tuple
+            return (plat,)
+        # Jika pilihan adalah 5, tidak meminta input apapun
+        elif pilihan == 5:
+            return None
+        # Jika pilihan tidak valid, menampilkan pesan error
+        else:
+            print("Pilihan tidak valid. Silakan masukkan angka 1-5.")
+            return None # Keluar dari metode
+
+# Membuat objek rental
+rental = Rental()
+
+# Menjalankan program dengan loop while
+while True:
+    # Menampilkan menu pilihan
+    rental.menu()
+    # Meminta input pilihan dari pengguna
+    pilihan = input("Masukkan pilihan Anda: ")
+    # Memvalidasi input pilihan, harus berupa angka 1-5
+    try:
+        pilihan = int(pilihan)
+        if pilihan < 1 or pilihan > 5:
+            raise ValueError
+    except ValueError:
+        print("Pilihan harus berupa angka 1-5.")
+        continue # Melanjutkan loop
+    # Jika pilihan adalah 5, keluar dari program
+    if pilihan == 5:
+        print("Terima kasih telah menggunakan sistem rental mobil sederhana.")
+        break # Menghentikan loop
+    # Jika pilihan bukan 5, meminta input data dari pengguna
+    data = rental.input_data(pilihan)
+    # Jika data tidak None, menjalankan metode sesuai dengan pilihan
+    if data is not None:
+        if pilihan == 1:
+            rental.create(*data) # Menambahkan mobil baru
+        elif pilihan == 2:
+            rental.update(*data) # Mengubah informasi mobil
+        elif pilihan == 3:
+            rental.read() # Menampilkan informasi semua mobil
+        elif pilihan == 4:
+            rental.delete(*data) # Menghapus mobil
+    # Menampilkan garis pemisah
+    # print("+"+"-" * 40+"+")
